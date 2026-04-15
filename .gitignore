@@ -1,0 +1,9 @@
+.vscode/
+.idea/
+cmake-build-debug/
+cmake-build-release/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
