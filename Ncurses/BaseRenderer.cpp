@@ -45,11 +45,8 @@ void BaseRenderer::renderBox(int box_y, int box_x, int box_height, int box_width
             box_x -= box_width / 2;
         }
 
-        // Top + middle space + bottom
+        // Top + bottom
         mvwhline(win, box_y, box_x - padding, ACS_HLINE, box_width + 2 * padding - 1);
-        for (int i = box_y + 1; i <= box_y+box_height - 1; i++) {
-            mvwhline(win, i, box_x - padding, ' ', box_width + 2 * padding - 1);
-        }
         mvwhline(win, box_y+box_height, box_x - padding, ACS_HLINE, box_width + 2 * padding - 1);
 
         // Vertical lines

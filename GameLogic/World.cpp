@@ -7,9 +7,12 @@
 #include <algorithm>
 #include <ctime>
 #include "../Organisms/Human.hpp"
+#include "../Organisms/Wolf.hpp"
+#include "../Organisms/Sheep.hpp"
+#include "../Organisms/Fox.hpp"
 
 World::World(int width, int height)
-    : width(width), height(height), turn(0)
+    : width(width), height(height), turn(0), humanPlayer(nullptr)
 {
     rng.seed(static_cast<unsigned int>(time(nullptr)));
 
@@ -46,6 +49,9 @@ void World::executeTurn() {
     auto it = organisms.begin();
     while (it != organisms.end()) {
         if (!(*it)->isAlive()) {
+             if (*it == humanPlayer) {
+                 humanPlayer = nullptr;
+             }
             delete *it;
             it = organisms.erase(it);
         } else {
@@ -65,6 +71,19 @@ Organism* World::getOrganismAt(int x, int y) const {
         }
     }
     return nullptr;
+}
+
+std::vector<Organism*> World::getAliveOrganisms() const {
+    std::vector<Organism*> alive_organims;
+
+    // Loop through all organisms (even the dead ones waiting to be cleaned up)
+    for (Organism* org : organisms) {
+        if (org->isAlive()) {
+            alive_organims.push_back(org); // Only keep the living ones!
+        }
+    }
+
+    return alive_organims;
 }
 
 void World::addLog(const std::string& message) {
@@ -117,15 +136,16 @@ void World::addAtRandomPos(Organism* o) {
 
 void World::populate() {
 
-    addOrganism(new Human(this, width / 2, height / 2));
+    humanPlayer = new Human(this, width / 2, height / 2);
+    addOrganism(humanPlayer);
 
     const int INITIAL_COUNT = 3;
 
     for (int i = 0; i < INITIAL_COUNT; ++i) {
 
-        // addAtRandomPos(new Wolf(this));
-        // addAtRandomPos(new Sheep(this));
-        // addAtRandomPos(new Fox(this));
+        addAtRandomPos(new Wolf(this));
+        addAtRandomPos(new Sheep(this));
+        addAtRandomPos(new Fox(this));
         // addAtRandomPos(new Turtle(this));
         // addAtRandomPos(new Antelope(this));
         //

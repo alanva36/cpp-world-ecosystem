@@ -10,6 +10,7 @@
 #include <string>
 
 class Organism;
+class Human;
 
 class World
 {
@@ -23,6 +24,7 @@ private:
     std::vector<std::string> logs;
 
     std::mt19937 rng;
+    Human* humanPlayer;
 
 public:
     World(int width, int height);
@@ -33,6 +35,8 @@ public:
 
     void addOrganism(Organism* organism);
     Organism* getOrganismAt(int x, int y) const;
+    std::vector<Organism*> getAliveOrganisms() const;
+    Human* getHumanPlayer() const { return humanPlayer; }
 
     void addLog(const std::string& message);
     const std::vector<std::string>& getLogs() const;

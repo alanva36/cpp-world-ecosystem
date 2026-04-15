@@ -8,6 +8,7 @@
 #include <vector>
 #include "MapRenderer.hpp"
 #include "../GameLogic/World.hpp"
+#include "../Organisms/Human.hpp"
 
 #define LOG_ROWS 5
 
@@ -67,7 +68,11 @@ void GameRenderer::draw(const World& world)
 
     mvwprintw(win, 0, 3, "GRA - alanva 123456 ");
     mvwprintw(win, 2, 3, "Rozmiar: %d/%d", map_width, map_height);
+    if (world.getHumanPlayer() != nullptr) {
+        mvwprintw(win, 3, 3, "Pozycja: %d/%d", world.getHumanPlayer()->getPositionX(), world.getHumanPlayer()->getPositionY());
+    }
     renderStatusBar(world);
+    renderBox(window_y/2-1,window_x/2,map_height+1, map_width, 1);
     if (map_renderer) {
         map_renderer->draw(world);
     }
@@ -79,7 +84,7 @@ void GameRenderer::draw(const World& world)
 void GameRenderer::renderStatusBar(const World& world)
 {
     std::string status = "Tura: " + std::to_string(world.getTurn()) +
-                         " | Organizmow: " + std::to_string(world.getOrganisms().size());
+                         " | Organizmow: " + std::to_string(world.getAliveOrganisms().size());
     mvwprintw(win, 1, 3, "%s", status.c_str());
 }
 

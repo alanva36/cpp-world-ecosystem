@@ -5,6 +5,7 @@
 #include "Animal.hpp"
 #include "../GameLogic/World.hpp"
 #include <string>
+#include <typeinfo>
 
 Animal::Animal(int force, int initiative, World* world, char symbol, int color, int x, int y)
     : Organism(force, initiative, world, symbol, color, x, y) {}
@@ -18,8 +19,7 @@ void Animal::action() {
     int nextX = getPositionX() + dx;
     int nextY = getPositionY() + dy;
 
-    if (nextX >= 0 && nextX < world->getWidth() &&
-        nextY >= 0 && nextY < world->getHeight()) {
+    if (world->isInBounds(nextX,nextY) == true) {
 
         Organism* obstacle = world->getOrganismAt(nextX, nextY);
 
@@ -35,26 +35,35 @@ void Animal::action() {
 
 void Animal::collision(Organism* other) {
 
-    if (this->getVisual().getModel() == other->getVisual().getModel()) {
+    if (typeid(*this) == typeid(*other)) {
+        std::vector<std::pair<int, int>> free_spots;
 
-        int bx = getPositionX() + (world->getRandom(3) - 1);
-        int by = getPositionY() + (world->getRandom(3) - 1);
+        for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+                int check_x = getPositionX() + dx;
+                int check_y = getPositionY() + dy;
 
-        if (world->getOrganismAt(bx, by) == nullptr) {
-            this->breed(bx, by);
-            world->addLog("Urodzil sie nowy osobnik gatunku " + std::string(1, getVisual().getModel()));
+                if (world->isInBounds(check_x, check_y) && world->getOrganismAt(check_x, check_y) == nullptr) {
+                    free_spots.push_back({check_x, check_y});
+                }
+            }
         }
+
+        if (!free_spots.empty()) {
+            int random_index = world->getRandom(free_spots.size());
+            this->breed(free_spots[random_index].first, free_spots[random_index].second);
+            world->addLog("Urodzil sie nowy osobnik " + std::string(1, getVisual().getModel()));
+        }
+
         return;
     }
 
     if (this->getForce() >= other->getForce()) {
-        world->addLog(std::string(1, getVisual().getModel()) + " zabija " + std::string(1, other->getVisual().getModel()));
-        other->kill();
-        this->setPosition(other->getPositionX(), other->getPositionY());
-
+            world->addLog(std::string(1, getVisual().getModel()) + " zabija " + std::string(1, other->getVisual().getModel()));
+            other->kill();
+            this->setPosition(other->getPositionX(), other->getPositionY());
     } else {
-
-        world->addLog(std::string(1, other->getVisual().getModel()) + " zabija " + std::string(1, getVisual().getModel()));
-        this->kill();
+            world->addLog(std::string(1, other->getVisual().getModel()) + " zabija " + std::string(1, getVisual().getModel()));
+            this->kill();
     }
 }

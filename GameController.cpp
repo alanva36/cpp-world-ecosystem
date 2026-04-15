@@ -3,11 +3,12 @@
 //
 
 #include "GameController.hpp"
+#include "Organisms/Human.hpp"
 
 GameController::GameController()
     :
       world_height(20),
-      world_width(40),
+      world_width(80),
       world(world_width, world_height),
       terminal(world_width, world_height),
       current_state(GameState::MENU),
@@ -62,7 +63,9 @@ void GameController::handlePlayMode(Command command) {
     }
 
     if (command != Command::NONE) {
-        // humanPlayer->receiveCommand(cmd);
+        if (world.getHumanPlayer() != nullptr) {
+            world.getHumanPlayer()->setNextCommand(command);
+        }
     }
 
     world.executeTurn();
