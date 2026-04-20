@@ -12,6 +12,16 @@
 #include "../Organisms/Fox.hpp"
 #include "../Organisms/Antelope.hpp"
 #include "../Organisms/Turtle.hpp"
+#include "../Organisms/Grass.hpp"
+#include "../Organisms/Guarana.hpp"
+#include "../Organisms/Nightshade.hpp"
+#include "../Organisms/Hogweed.hpp"
+#include "../Organisms/Dandelion.hpp"
+
+
+
+
+
 
 World::World(int width, int height)
     : width(width), height(height), turn(0), humanPlayer(nullptr)
@@ -150,11 +160,11 @@ void World::populate() {
         addAtRandomPos(new Fox(this));
         addAtRandomPos(new Turtle(this));
         addAtRandomPos(new Antelope(this));
-        //
-        // addAtRandomPos(new Grass(this));
-        // addAtRandomPos(new Dandelion(this));
-        // addAtRandomPos(new Guarana(this));
-        // addAtRandomPos(new WolfBerries(this));
-        // addAtRandomPos(new Hogweed(this));
+
+        addAtRandomPos(new Grass(this));
+        addAtRandomPos(new Dandelion(this));
+        addAtRandomPos(new Guarana(this));
+        addAtRandomPos(new Nightshade(this));
+        addAtRandomPos(new Hogweed(this));
     }
 }

@@ -10,7 +10,7 @@
 #include "../GameLogic/World.hpp"
 #include "../Organisms/Human.hpp"
 
-#define LOG_ROWS 5
+#define LOG_ROWS 6
 
 GameRenderer::GameRenderer(WINDOW* win, int world_width, int world_height)
     : BaseRenderer(win),
@@ -90,5 +90,21 @@ void GameRenderer::renderStatusBar(const World& world)
 
 void GameRenderer::renderLogs(const World& world)
 {
-    renderBox(window_y-LOG_ROWS, window_x/2, LOG_ROWS-1, map_width, 1);
+    int log_start_y = window_y - LOG_ROWS ;
+    int log_start_x = (window_x / 2) - (map_width / 2);
+    renderBox(log_start_y, window_x/2, LOG_ROWS-1, map_width, 1);
+
+    const std::vector<std::string>& logs = world.getLogs();
+
+    int max_visible_logs = LOG_ROWS - 2;
+    int start_index = 0;
+
+    if (logs.size() > max_visible_logs) {
+        start_index = logs.size() - max_visible_logs;
+    }
+
+    for (int i = 0; i < max_visible_logs && (start_index + i) < logs.size(); ++i) {
+        mvwprintw(win, log_start_y + i - 1, log_start_x + 1, "%s", logs[start_index + i].c_str());
+    }
+
 }

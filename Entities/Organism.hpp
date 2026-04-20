@@ -35,6 +35,7 @@ public:
     int getPositionX() const;
     int getPositionY() const;
     void setPosition(int x, int y);
+    void setForce(int new_force);
     bool isAlive() const;
     void kill();
 

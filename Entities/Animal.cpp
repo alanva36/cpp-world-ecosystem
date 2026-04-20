@@ -52,18 +52,18 @@ void Animal::collision(Organism* other) {
         if (!free_spots.empty()) {
             int random_index = world->getRandom(free_spots.size());
             this->breed(free_spots[random_index].first, free_spots[random_index].second);
-            world->addLog("Urodzil sie nowy osobnik " + std::string(1, getVisual().getModel()));
+            world->addLog("Urodzil sie nowy osobnik " + other->getName());
         }
 
         return;
     }
 
     if (this->getForce() >= other->getForce()) {
-            world->addLog(std::string(1, getVisual().getModel()) + " zabija " + std::string(1, other->getVisual().getModel()));
+            world->addLog(getName() + " zabija " + other->getName());
             other->kill();
             this->setPosition(other->getPositionX(), other->getPositionY());
     } else {
-            world->addLog(std::string(1, other->getVisual().getModel()) + " zabija " + std::string(1, getVisual().getModel()));
+            world->addLog(other->getName() + " zabija " + getName());
             this->kill();
     }
 }

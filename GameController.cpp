@@ -7,7 +7,7 @@
 
 GameController::GameController()
     :
-      world_height(20),
+      world_height(16),
       world_width(80),
       world(world_width, world_height),
       terminal(world_width, world_height),

@@ -30,7 +30,6 @@ public:
     World(int width, int height);
     ~World();
 
-    // Główna logika tury
     void executeTurn();
 
     void addOrganism(Organism* organism);
