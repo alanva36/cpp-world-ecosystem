@@ -10,6 +10,8 @@
 #include "../Organisms/Wolf.hpp"
 #include "../Organisms/Sheep.hpp"
 #include "../Organisms/Fox.hpp"
+#include "../Organisms/Antelope.hpp"
+#include "../Organisms/Turtle.hpp"
 
 World::World(int width, int height)
     : width(width), height(height), turn(0), humanPlayer(nullptr)
@@ -146,8 +148,8 @@ void World::populate() {
         addAtRandomPos(new Wolf(this));
         addAtRandomPos(new Sheep(this));
         addAtRandomPos(new Fox(this));
-        // addAtRandomPos(new Turtle(this));
-        // addAtRandomPos(new Antelope(this));
+        addAtRandomPos(new Turtle(this));
+        addAtRandomPos(new Antelope(this));
         //
         // addAtRandomPos(new Grass(this));
         // addAtRandomPos(new Dandelion(this));

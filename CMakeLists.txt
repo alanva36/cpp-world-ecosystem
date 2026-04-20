@@ -27,7 +27,9 @@ add_executable(Projekt main.cpp
         Organisms/Wolf.cpp
         Organisms/Sheep.cpp
         Organisms/Fox.cpp
-        Organisms/Human.cpp)
+        Organisms/Human.cpp
+        Organisms/Antelope.cpp
+        Organisms/Turtle.cpp)
 
 # 4. Linkowanie biblioteki ncurses do Twojego programu
 target_link_libraries(Projekt ${CURSES_LIBRARIES})
