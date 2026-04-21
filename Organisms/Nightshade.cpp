@@ -20,4 +20,5 @@ void Nightshade::collision(Organism* other) {
 
 void Nightshade::spread(int x, int y) {
     world->addOrganism(new Nightshade(world, x, y));
+    world->addLog(this->getName() + " rozsialy sie na pole (" + std::to_string(x) + "," + std::to_string(y) + ")");
 }

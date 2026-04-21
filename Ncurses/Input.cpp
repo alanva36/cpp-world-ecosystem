@@ -6,6 +6,8 @@
 
 Input::Input(WINDOW* window) : win(window) {
 
+    key_bindings['l']      = Command::SKILL;
+
     key_bindings['w']      = Command::UP;
     key_bindings[KEY_UP]   = Command::UP;
 

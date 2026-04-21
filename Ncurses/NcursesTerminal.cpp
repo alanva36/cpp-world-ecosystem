@@ -28,6 +28,8 @@ NcursesTerminal::NcursesTerminal(int world_width, int world_height)
         init_pair(3, COLOR_GREEN, COLOR_BLACK);
         init_pair(4, COLOR_RED, COLOR_BLACK);
         init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
+        init_pair(6, COLOR_CYAN, COLOR_BLACK);
+        init_pair(7, COLOR_CYAN, COLOR_YELLOW);
     }
 
     updateTerminalSize();

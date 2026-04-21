@@ -7,6 +7,8 @@
 #include <string>
 #include <typeinfo>
 
+#include "Plant.hpp"
+
 Animal::Animal(int force, int initiative, World* world, char symbol, int color, int x, int y)
     : Organism(force, initiative, world, symbol, color, x, y) {}
 
@@ -57,13 +59,31 @@ void Animal::collision(Organism* other) {
 
         return;
     }
-
+    std::string message;
     if (this->getForce() >= other->getForce()) {
-            world->addLog(getName() + " zabija " + other->getName());
+
+            if (dynamic_cast<const Plant*>(other)){
+                message = " zjada ";
+
+            }
+            else{
+                message = " zabija ";
+
+            }
+            world->addLog(getName() + message + other->getName());
             other->kill();
             this->setPosition(other->getPositionX(), other->getPositionY());
-    } else {
-            world->addLog(other->getName() + " zabija " + getName());
+    }
+    else{
+            if (dynamic_cast<const Plant*>(other)){
+                message = " zatruwa ";
+
+            }
+            else{
+                message = " zabija ";
+
+            }
+            world->addLog(other->getName() + message + getName());
             this->kill();
     }
 }

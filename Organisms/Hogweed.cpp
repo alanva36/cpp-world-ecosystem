@@ -41,4 +41,5 @@ void Hogweed::collision(Organism* other) {
 
 void Hogweed::spread(int x, int y) {
     world->addOrganism(new Hogweed(world, x, y));
+    world->addLog(this->getName() + " rozprzestrzenil sie na pole (" + std::to_string(x) + "," + std::to_string(y) + ")");
 }

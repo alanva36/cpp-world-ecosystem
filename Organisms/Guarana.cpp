@@ -23,4 +23,5 @@ void Guarana::collision(Organism* other) {
 
 void Guarana::spread(int x, int y) {
     world->addOrganism(new Guarana(world, x, y));
+    world->addLog(this->getName() + " rozsiala sie na pole (" + std::to_string(x) + "," + std::to_string(y) + ")");
 }
