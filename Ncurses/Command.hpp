@@ -14,6 +14,9 @@ enum class Command {
     ACTION_SECONDARY,
     TOGGLE_MENU,
     SKILL,
+    NEXT_TURN,
+    SAVE_GAME,
+    LOAD_GAME,
     NONE
 };
 

@@ -7,7 +7,7 @@
 #include "../GameLogic/World.hpp"
 
 Grass::Grass(World* world, int x, int y)
-    : Plant(0, x, y, world, 'T', 2)
+    : Plant(0, x, y, world, 'T', 3)
 {
 }
 

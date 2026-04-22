@@ -6,9 +6,9 @@
 #define PROJEKT_GAMERENDERER_HPP
 
 #include "BaseRenderer.hpp"
+#include "../GameSettings.hpp"
 
 class MapRenderer;
-
 class World;
 
 class GameRenderer : public BaseRenderer
@@ -16,19 +16,23 @@ class GameRenderer : public BaseRenderer
 private:
     WINDOW* map_win;
     MapRenderer* map_renderer;
+    GameSettings& settings;
 
-    int map_width;
-    int map_height;
+    const int LOG_ROWS = 6;
+    const int MIN_WIDTH_LOG = 60;
+
 public:
-    explicit GameRenderer(WINDOW* win = nullptr, int world_width = 0, int world_height = 0);
+    explicit GameRenderer(GameSettings& settings_ref, WINDOW* win = nullptr);
     ~GameRenderer() override;
+
     void setWindow(WINDOW* win) override;
+    void refreshLayout();
     void draw(const World& world);
 
 private:
     void setupDerivedWindows();
     void renderStatusBar(const World& world);
     void renderLogs(const World& world);
-
 };
+
 #endif //PROJEKT_GAMERENDERER_HPP

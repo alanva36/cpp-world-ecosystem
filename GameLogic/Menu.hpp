@@ -8,19 +8,27 @@
 #include <vector>
 #include <string>
 
+#include "../GameSettings.hpp"
+
 class Menu {
 private:
+    int selected_index;
+    GameSettings& settings; // Referencja do obiektu w kontrolerze
     std::vector<std::string> options;
-    int selectedIndex;
 
 public:
-    Menu();
+    Menu(GameSettings& settings); // Konstruktor przyjmuje referencję
 
     void moveUp();
     void moveDown();
+    void increaseValue();
+    void decreaseValue();
 
     int getSelectedIndex() const;
     const std::vector<std::string>& getOptions() const;
+
+private:
+    void updateMenuText();
 };
 
 

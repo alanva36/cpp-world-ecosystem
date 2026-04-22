@@ -12,11 +12,11 @@ Fox::Fox(World* world, int x, int y)
 
 void Fox::action() {
     int dx, dy;
-    int nextX, nextY;
-    bool foundSafeSpot = false;
+    int next_x, next_y;
+    bool safe_spot = false;
     int attempts = 0;
 
-    while (!foundSafeSpot && attempts < 8) {
+    while (!safe_spot && attempts < 8) {
         dx = world->getRandom(3) - 1;
         dy = world->getRandom(3) - 1;
 
@@ -25,24 +25,24 @@ void Fox::action() {
             continue;
         }
 
-        nextX = getPositionX() + dx;
-        nextY = getPositionY() + dy;
+        next_x = getPositionX() + dx;
+        next_y = getPositionY() + dy;
 
-        if (world->isInBounds(nextX, nextY)) {
-            Organism* obstacle = world->getOrganismAt(nextX, nextY);
+        if (world->isInBounds(next_x, next_y)) {
+            Organism* obstacle = world->getOrganismAt(next_x, next_y);
 
             if (obstacle == nullptr || obstacle->getForce() <= this->getForce()) {
-                foundSafeSpot = true;
+                safe_spot = true;
             }
         }
         attempts++;
     }
 
-    if (foundSafeSpot) {
-        Organism* obstacle = world->getOrganismAt(nextX, nextY);
+    if (safe_spot) {
+        Organism* obstacle = world->getOrganismAt(next_x, next_y);
 
         if (obstacle == nullptr) {
-            setPosition(nextX, nextY);
+            setPosition(next_x, next_y);
         } else {
             this->collision(obstacle);
         }

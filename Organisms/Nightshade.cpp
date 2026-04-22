@@ -6,7 +6,7 @@
 #include "../GameLogic/World.hpp"
 
 Nightshade::Nightshade(World* world, int x, int y)
-    : Plant(99, x, y, world, 'J', 5) // Siła 99, Symbol 'J', kolor 5 (np. fioletowy)
+    : Plant(99, x, y, world, 'J', 1)
 {
 }
 

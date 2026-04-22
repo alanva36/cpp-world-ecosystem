@@ -13,11 +13,10 @@ class Input
 {
 
 private:
-    WINDOW* win;
     std::unordered_map<int, Command> key_bindings;
 
 public:
-    Input(WINDOW* window = nullptr);
+    Input();
     Command getCommand();
 
 };

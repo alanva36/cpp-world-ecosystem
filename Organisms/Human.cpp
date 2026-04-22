@@ -13,12 +13,22 @@ Human::Human(World* world, int x, int y)
 {
 }
 
+bool Human::isSkillActive() const {
+    return skillTimer > 0;
+}
+
+std::string Human::getSkillStatus() const {
+    if (skillTimer > 0) return "AKTYWNA (" + std::to_string(skillTimer) + "t)";
+    if (cooldownTimer > 0) return "ODNAWIANIE (" + std::to_string(cooldownTimer) + "t)";
+    return "GOTOWA (L)";
+}
+
 void Human::action() {
     int nextX = getPositionX();
     int nextY = getPositionY();
     int move_step = 1;
 
-    if (skillTimer > 0){
+    if (isSkillActive()){
         if (skillTimer > 2){
             move_step = 2;
         }
@@ -73,10 +83,6 @@ void Human::action() {
 }
 
 void Human::collision(Organism* other) {
-    if (skillTimer > 0) {
-        world->addLog("Tarcza aktywna! Czlowiek odpycha atak " + std::string(1, other->getVisual().getModel()));
-        return;
-    }
 
     Animal::collision(other);
 }

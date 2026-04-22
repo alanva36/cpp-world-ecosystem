@@ -4,15 +4,15 @@
 
 #include "GameController.hpp"
 #include "Organisms/Human.hpp"
+#include "GameLogic/World.hpp"
 
 GameController::GameController()
-    :
-      world_height(16),
-      world_width(80),
-      world(world_width, world_height),
-      terminal(world_width, world_height),
+    : is_running(true),
       current_state(GameState::MENU),
-      is_running(true)
+      settings(),
+      world(nullptr),
+      terminal(settings),
+      main_menu(settings)
 {
     terminal.showMenuWindow();
 }
@@ -24,7 +24,6 @@ void GameController::run() {
         if (current_state == GameState::MENU) {
             handleMenuMode(command);
         }
-
         else if (current_state == GameState::PLAYING) {
             handlePlayMode(command);
         }
@@ -32,22 +31,35 @@ void GameController::run() {
 }
 
 void GameController::handleMenuMode(Command command) {
-    // 1. Update the Menu Data
     if (command == Command::UP) {
         main_menu.moveUp();
     }
     else if (command == Command::DOWN) {
         main_menu.moveDown();
     }
+    else if (command == Command::RIGHT) {
+        main_menu.increaseValue();
+    }
+    else if (command == Command::LEFT) {
+        main_menu.decreaseValue();
+    }
     else if (command == Command::ACTION_PRIMARY) {
         int choice = main_menu.getSelectedIndex();
 
-        if (choice == 0) { // "Start Game"
-            terminal.showGameWindow();
-            terminal.getGameRenderer()->draw(world);
+        if (choice == 0) {
+
+            world = std::make_unique<World>(settings);
+
+            terminal.resize();
+
             current_state = GameState::PLAYING;
+            terminal.showGameWindow();
+
+            if (world) {
+                terminal.getGameRenderer()->draw(*world);
+            }
         }
-        else if (choice == 2) { // "Quit"
+        else if (choice == 3) {
             is_running = false;
         }
     }
@@ -56,6 +68,23 @@ void GameController::handleMenuMode(Command command) {
 }
 
 void GameController::handlePlayMode(Command command) {
+
+    if (!world) return;
+
+    if (command == Command::SAVE_GAME) {
+        world->saveToFile("savegame.txt");
+        terminal.getGameRenderer()->draw(*world);
+        return;
+    }
+
+    if (command == Command::LOAD_GAME) {
+        world->loadFromFile("savegame.txt");
+
+        terminal.resize();
+        terminal.getGameRenderer()->draw(*world);
+        return;
+    }
+
     if (command == Command::TOGGLE_MENU) {
         current_state = GameState::MENU;
         terminal.showMenuWindow();
@@ -63,12 +92,19 @@ void GameController::handlePlayMode(Command command) {
     }
 
     if (command != Command::NONE) {
-        if (world.getHumanPlayer() != nullptr) {
-            world.getHumanPlayer()->setNextCommand(command);
+        if (world->getHumanPlayer() != nullptr) {
+            world->getHumanPlayer()->setNextCommand(command);
         }
     }
 
-    world.executeTurn();
+    if (command == Command::UP ||
+    command == Command::DOWN ||
+    command == Command::LEFT ||
+    command == Command::RIGHT ||
+    command == Command::NEXT_TURN ||
+    command== Command::SKILL) {
+        world->executeTurn();
+    }
 
-    terminal.getGameRenderer()->draw(world);
+    terminal.getGameRenderer()->draw(*world);
 }

@@ -4,26 +4,53 @@
 
 #include "Menu.hpp"
 
-Menu::Menu() : selectedIndex(0) {
+Menu::Menu(GameSettings& settings_ref)
+    : selected_index(0), settings(settings_ref) {
+    updateMenuText();
+}
+
+void Menu::updateMenuText() {
+    options.clear();
     options.emplace_back("Start Game");
-    options.emplace_back("Options");
+    options.emplace_back("World Width: " + std::to_string(settings.getWorldWidth()));
+    options.emplace_back("World Height: " + std::to_string(settings.getWorldHeight()));
     options.emplace_back("Quit");
 }
 
 void Menu::moveUp() {
-    if (selectedIndex > 0) {
-        selectedIndex--;
+    if (selected_index > 0) {
+        selected_index--;
     }
 }
 
 void Menu::moveDown() {
-    if (selectedIndex < static_cast<int>(options.size()) - 1) {
-        selectedIndex++;
+    if (selected_index < static_cast<int>(options.size()) - 1) {
+        selected_index++;
     }
 }
 
+void Menu::increaseValue() {
+    if (selected_index == 1) {
+        settings.setWorldWidth(settings.getWorldWidth() + 2);
+    } else if (selected_index == 2) {
+        settings.setWorldHeight(settings.getWorldHeight() + 2);
+    }
+    settings.validateSettings();
+    updateMenuText();
+}
+
+void Menu::decreaseValue() {
+    if (selected_index == 1) {
+        settings.setWorldWidth(settings.getWorldWidth() - 2);
+    } else if (selected_index == 2) {
+        settings.setWorldHeight(settings.getWorldHeight() - 2);
+    }
+    settings.validateSettings();
+    updateMenuText();
+}
+
 int Menu::getSelectedIndex() const {
-    return selectedIndex;
+    return selected_index;
 }
 
 const std::vector<std::string>& Menu::getOptions() const {

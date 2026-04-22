@@ -18,15 +18,15 @@ void Animal::action() {
 
     if (dx == 0 && dy == 0) return;
 
-    int nextX = getPositionX() + dx;
-    int nextY = getPositionY() + dy;
+    int next_x = getPositionX() + dx;
+    int next_y = getPositionY() + dy;
 
-    if (world->isInBounds(nextX,nextY) == true) {
+    if (world->isInBounds(next_x,next_y) == true) {
 
-        Organism* obstacle = world->getOrganismAt(nextX, nextY);
+        Organism* obstacle = world->getOrganismAt(next_x, next_y);
 
         if (obstacle == nullptr) {
-            setPosition(nextX, nextY);
+            setPosition(next_x, next_y);
 
         } else {
             this->collision(obstacle);
@@ -37,9 +37,10 @@ void Animal::action() {
 
 void Animal::collision(Organism* other) {
 
+    if (other == nullptr || this == other) return;
+
     if (typeid(*this) == typeid(*other)) {
         std::vector<std::pair<int, int>> free_spots;
-
         for (int dy = -1; dy <= 1; ++dy) {
             for (int dx = -1; dx <= 1; ++dx) {
                 int check_x = getPositionX() + dx;
@@ -54,36 +55,36 @@ void Animal::collision(Organism* other) {
         if (!free_spots.empty()) {
             int random_index = world->getRandom(free_spots.size());
             this->breed(free_spots[random_index].first, free_spots[random_index].second);
-            world->addLog("Urodzil sie nowy osobnik " + other->getName());
+            world->addLog("Urodzil sie nowy osobnik " + this->getName());
         }
-
         return;
     }
-    std::string message;
-    if (this->getForce() >= other->getForce()) {
 
-            if (dynamic_cast<const Plant*>(other)){
-                message = " zjada ";
+    int target_x = other->getPositionX();
+    int target_y = other->getPositionY();
 
-            }
-            else{
-                message = " zabija ";
+    Plant* plant = dynamic_cast<Plant*>(other);
+    if (plant != nullptr) {
+        world->addLog(this->getName() + " zjada " + other->getName());
 
-            }
-            world->addLog(getName() + message + other->getName());
-            other->kill();
-            this->setPosition(other->getPositionX(), other->getPositionY());
+        other->collision(this);
+
+        if (this->isAlive()) {
+            this->setPosition(target_x, target_y);
+        }
+        return;
     }
-    else{
-            if (dynamic_cast<const Plant*>(other)){
-                message = " zatruwa ";
 
-            }
-            else{
-                message = " zabija ";
+    if (other->didDeflectAttack(this)) {
+        return;
+    }
 
-            }
-            world->addLog(other->getName() + message + getName());
-            this->kill();
+    if (this->getForce() >= other->getForce()) {
+        world->addLog(this->getName() + " zabija " + other->getName());
+        other->kill();
+        this->setPosition(target_x, target_y);
+    } else {
+        world->addLog(other->getName() + " zabija " + this->getName());
+        this->kill();
     }
 }

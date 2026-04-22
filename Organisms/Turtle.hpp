@@ -13,7 +13,7 @@ public:
     virtual ~Turtle() = default;
 
     void action() override;
-    void collision(Organism* other) override;
+    bool didDeflectAttack(Organism* attacker) override;
     void breed(int x, int y) override;
     std::string getName() override { return "Zolw"; }
 };

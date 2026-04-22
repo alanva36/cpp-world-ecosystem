@@ -20,6 +20,10 @@ public:
     Human(World* world, int x = 0, int y = 0);
     virtual ~Human() = default;
 
+    bool isSkillActive() const;
+
+    std::string getSkillStatus() const;
+
     void action() override;
     void collision(Organism* other) override;
 

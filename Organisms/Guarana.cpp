@@ -7,7 +7,7 @@
 #include "../Entities/Organism.hpp"
 
 Guarana::Guarana(World* world, int x, int y)
-    : Plant(0, x, y, world, 'G', 1)
+    : Plant(0, x, y, world, 'G', 5)
 {
 }
 

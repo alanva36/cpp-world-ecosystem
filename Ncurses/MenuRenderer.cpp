@@ -19,7 +19,7 @@ void MenuRenderer::draw(const Menu& menu)
 
     box(win, 0, 0);
 
-    mvwprintw(win, 0, 2, " WIRTUALNY SWIAT - alanva 363636");
+    mvwprintw(win, 0, 2, " WIRTUALNY SWIAT - Alan Nowak 208282");
 
     const std::vector<std::string>& options = menu.getOptions();
     int highlight = menu.getSelectedIndex();

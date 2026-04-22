@@ -19,19 +19,14 @@ void Turtle::action() {
     Animal::action();
 }
 
-void Turtle::collision(Organism* other) {
-    if (typeid(*this) == typeid(*other)) {
-        Animal::collision(other);
-        return;
-    }
-    if (other->getForce() < 5) {
-        world->addLog(this->getName() + " odpiera atak " + other->getName());
-        return;
-    }
-
-    Animal::collision(other);
-}
-
 void Turtle::breed(int x, int y) {
     world->addOrganism(new Turtle(world, x, y));
+}
+
+bool Turtle::didDeflectAttack(Organism* attacker) {
+    if (attacker->getForce() < 5) {
+        world->addLog("Zolw odpiera atak " + attacker->getName() + " (sila < 5)");
+        return true;
+    }
+    return false;
 }

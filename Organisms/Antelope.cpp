@@ -32,37 +32,32 @@ void Antelope::action() {
     }
 }
 
-void Antelope::collision(Organism* other) {
-    if (typeid(*this) == typeid(*other)) {
-        Animal::collision(other);
-        return;
-    }
-
+bool Antelope::didDeflectAttack(Organism* attacker) {
     if (world->getRandom(100) < 50) {
         std::vector<std::pair<int, int>> free_spots;
 
         for (int dy = -1; dy <= 1; ++dy) {
             for (int dx = -1; dx <= 1; ++dx) {
-                int check_x = getPositionX() + dx;
-                int check_y = getPositionY() + dy;
+                if (dx == 0 && dy == 0) continue;
+                int nx = getPositionX() + dx;
+                int ny = getPositionY() + dy;
 
-                if (world->isInBounds(check_x, check_y) && world->getOrganismAt(check_x, check_y) == nullptr) {
-                    free_spots.push_back({check_x, check_y});
+                if (world->isInBounds(nx, ny) && world->getOrganismAt(nx, ny) == nullptr) {
+                    free_spots.push_back({nx, ny});
                 }
             }
         }
 
         if (!free_spots.empty()) {
             int idx = world->getRandom(free_spots.size());
+            world->addLog(getName() + " ucieka przed walka z " + attacker->getName());
             this->setPosition(free_spots[idx].first, free_spots[idx].second);
-            world->addLog(this->getName() + " ucieka przed walka z " + other->getName());
-            return;
+            return true;
         }
     }
 
-    Animal::collision(other);
+    return false;
 }
-
 void Antelope::breed(int x, int y) {
     world->addOrganism(new Antelope(world, x, y));
 }

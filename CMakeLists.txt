@@ -39,7 +39,9 @@ add_executable(Projekt main.cpp
         Organisms/Nightshade.cpp
         Organisms/Nightshade.hpp
         Organisms/Hogweed.cpp
-        Organisms/Hogweed.hpp)
+        Organisms/Hogweed.hpp
+        GameSettings.cpp
+        GameSettings.hpp)
 
 # 4. Linkowanie biblioteki ncurses do Twojego programu
 target_link_libraries(Projekt ${CURSES_LIBRARIES})

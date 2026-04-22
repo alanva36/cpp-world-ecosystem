@@ -27,9 +27,11 @@ void Organism::setPosition(int x, int y) {
 }
 
 void Organism::setForce(int new_force) {
-
     force = new_force;
+}
 
+void Organism::setAge(int new_age) {
+    age = new_age;
 }
 
 void Organism::incrementAge() {

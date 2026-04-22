@@ -7,11 +7,9 @@
 #include "GameRenderer.hpp"
 #include "MenuRenderer.hpp"
 #include "Input.hpp"
+#include "../GameSettings.hpp"
 
-
-class NcursesTerminal
-{
-
+class NcursesTerminal {
 private:
     WINDOW* main_window;
     WINDOW* game_window;
@@ -21,20 +19,22 @@ private:
     MenuRenderer menu_renderer;
     Input input;
 
+    GameSettings& settings;
+
     int max_x;
     int max_y;
 
 public:
-    NcursesTerminal(int world_width, int world_height);
+    NcursesTerminal(GameSettings& settings_ref);
     ~NcursesTerminal();
 
     GameRenderer* getGameRenderer();
     MenuRenderer* getMenuRenderer();
 
     void updateTerminalSize();
-
     void showGameWindow();
     void showMenuWindow();
+    void resize();
 
     Command getInput();
 
