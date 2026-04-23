@@ -33,7 +33,7 @@ void Hogweed::action() {
 }
 
 void Hogweed::collision(Organism* other) {
-    world->addLog(other->getName() + " zjada Barszcz i ginie!");
+    world->addLog(other->getName() + " ginie!");
 
     other->kill();
     this->kill();

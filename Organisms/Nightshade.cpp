@@ -11,7 +11,7 @@ Nightshade::Nightshade(World* world, int x, int y)
 }
 
 void Nightshade::collision(Organism* other) {
-    world->addLog(other->getName() + " zjada " + this->getName() + " i ginie!");
+    world->addLog(other->getName() + " ginie!");
 
     other->kill();
 

@@ -15,8 +15,7 @@ void Guarana::collision(Organism* other) {
 
     other->setForce(other->getForce() + 3);
 
-    world->addLog(other->getName() +
-                  " zjada " + this->getName() + " i zwieksza sile o 3!");
+    world->addLog(this->getName() + " zwieksza sile "  + other->getName() +" o 3!");
 
     Plant::collision(other);
 }
